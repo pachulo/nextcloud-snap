@@ -187,7 +187,7 @@ parts:
     build-packages:
       - libxml2-dev
       - libcurl4-openssl-dev
-      - libpng16-dev
+      - libpng-dev
       - libjpeg9-dev
       - libbz2-dev
       - libmcrypt-dev
