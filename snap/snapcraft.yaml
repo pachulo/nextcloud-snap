@@ -183,11 +183,11 @@ parts:
     stage-packages:
       # These are only included here until the OS snap stabilizes
       - libxml2
-      - libpng16
+      - libpng16-16
     build-packages:
       - libxml2-dev
       - libcurl4-openssl-dev
-      - libpng-dev
+      - libpng16-dev
       - libjpeg9-dev
       - libbz2-dev
       - libmcrypt-dev
