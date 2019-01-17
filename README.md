@@ -76,6 +76,20 @@ redirected to port 444. You can specify both of these simultaneously as well:
 ports 80 and 443 are sent to Nextcloud for that domain name, Let's Encrypt will
 be unable to verify ownership of your domain and will not grant certificates.
 
+#### Http/2 configuration
+
+**Note:** Http/2 has caused some controversy and is therefore disabled by default.
+
+If desired you can enable http/2 by running:
+
+    $ sudo snap set nextcloud apache.http2=true
+
+To disable it again just run:
+
+    $ sudo snap set nextcloud apache.http2=false
+
+
+
 **Also note:** Nextcloud's automatic hostname detection can fail when behind
 a proxy; you might notice it redirecting incorrectly. If this happens, override
 the automatic detection (including the port if necessary), e.g.:
@@ -186,10 +200,13 @@ dependencies:
     $ cd tests/
     $ bundle install
 
+For the http/2 test to work you also need docker installed. See [here](https://docs.docker.com/install/) on how to install docker.
+
 Additionally, if you do not have X configured, install the following for a
 'fake' X server.
 
     $ sudo apt install xvfb
+
 
 Make sure the snap has a user called "admin" with password "admin" (used for
 login tests):

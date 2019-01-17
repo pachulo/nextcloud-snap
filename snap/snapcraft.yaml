@@ -119,6 +119,10 @@ parts:
       # Work around by unsetting setgid. FIXME: Remove when bug is fixed.
       find . -perm -g+s -exec chmod g-s {} \;
 
+    build-packages:
+      - libnghttp2-14
+      - libnghttp2-dev
+
     # The built-in Apache modules to enable
     modules:
       - headers
@@ -134,6 +138,7 @@ parts:
       - alias
       - ssl
       - socache_shmcb
+      - http2
 
     filesets:
       exclude:

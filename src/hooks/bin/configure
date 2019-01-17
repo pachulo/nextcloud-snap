@@ -12,6 +12,9 @@
 #   Memory limit for PHP workers. String can include units, e.g. 32M is 32
 #   megabytes.
 #
+# - apache.http2 (string)
+#   Setting if http/2 should be enabled as ServerProtocol. String can be true or false.
+#
 # - nextcloud.cron-interval (string)
 #   Interval of the internal Nextcloud cronjob
 #
@@ -85,6 +88,28 @@ handle_php_memory_limit()
 	snapctl restart nextcloud.php-fpm
 }
 
+handle_http2_setting()
+{
+	http2_status="$(snapctl get apache.http2)"
+	previous_http2_status="$(apache_previous_http2_status)"
+
+	# Return if no new changes were requested
+	if [ "$http2_status" = "$previous_http2_status" ]; then
+		return 0;
+	fi
+
+	# Validate input
+	if [ "$http2_status" = "true" ] || [ "$http2_status" = "false" ] ; then
+		apache_set_http2_status "$http2_status"
+		apache_set_previous_http2_status "$http2_status"
+	fi
+
+	if ! restart_apache_if_running; then
+		return 7
+	fi
+
+}
+
 handle_cronjob_interval()
 {
 	interval="$(cronjob_interval)"
@@ -131,7 +156,9 @@ handle_mode()
 	snapctl restart nextcloud.php-fpm
 }
 
+
 handle_apache_port_config && \
 handle_php_memory_limit && \
 handle_cronjob_interval && \
+handle_http2_setting && \
 handle_mode
