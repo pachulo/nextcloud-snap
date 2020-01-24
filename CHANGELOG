@@ -1,3 +1,97 @@
+v 16.0.7snap2
+  - nextcloud-fixer: upgrade and update apps before anything else
+
+v 16.0.7snap1
+  - nextcloud: update to 16.0.7
+  - nextcloud-fixer: update all apps
+  - tests: update dependencies
+
+v 16.0.5snap4
+  - php: update to 7.3.13
+
+v 16.0.5snap3
+  - php: update to 7.2.24
+  - mysql: update to 5.7.28
+
+v 16.0.5snap2
+  - php: update to 7.2.23
+  - php: check file timestamps for opcache
+  - tests: disable v14 dailies and enable v16
+
+v 16.0.5snap1
+  - nextcloud: update to 16.0.5
+
+v 15.0.11snap2
+  - tests: update ruby version and gems
+  - php: enable gmp
+  - php: update to 7.2.22
+
+v 15.0.11snap1
+  - nextcloud: update to 15.0.11
+  - apache: update to 2.4.41
+
+v 15.0.10snap3
+  - php: update to 7.2.21
+  - mysql: explicitly configure error log file name
+  - mysql: only write root password to root.ini if successfully set
+
+v 15.0.10snap2
+  - php: update to 7.2.20
+  - mysql: update to 5.7.27
+
+v 15.0.10snap1
+  - nextcloud: update to 15.0.10
+
+v 15.0.8snap3
+  - php: update to 7.2.19
+
+v 15.0.8snap2
+  - certbot: re-introduce custom webroot plugin
+
+v 15.0.8snap1
+  - certbot: patch out untested chown calls
+  - nextcloud: update to 15.0.8
+  - ci: enable daily v16
+
+v 15.0.7snap2
+  - php: update to 7.2.18
+  - tests: move from webkit to chrome
+  - mysql: update to 5.7.26
+  - certbot: update to 0.33.1
+  - README: add config file path to tool section
+  - README: add file paths to "where is my stuff"
+  - ci: disable v13 dailies
+
+v 15.0.7snap1
+  - nextcloud: update to 15.0.7
+  - php: update to 7.2.17
+  - apache: update to 2.4.39
+
+v 15.0.5snap2
+  - apache: disable TLS 1.0 and 1.1 and strengthen ciphers
+  - apache: don't redirect Let's Encrypt to HTTPS
+  - php: update to 7.2.16
+
+v 15.0.5snap1
+  - nextcloud: update to 15.0.5
+  - mysql: update to 5.7.25
+  - redis: update to 4.0.13
+
+v 15.0.4snap1
+  - nextcloud: update to 15.0.4
+
+v 15.0.2snap2
+  - nextcloud-fixer: disable theming app on new installs
+
+v 15.0.2snap1
+  - apache: update to 2.4.38
+  - nextcloud: update to 15.0.2
+
+v 14.0.6snap1
+  - php: enable large file support on 32-bit systems
+  - nextcloud: update to 14.0.6
+  - php: update to 7.2.14
+
 v 14.0.5snap2
   - nextcloud: disable updatenotification before upgrade
 

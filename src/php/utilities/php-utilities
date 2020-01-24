@@ -1,5 +1,8 @@
 #!/bin/sh
 
+# shellcheck source=src/common/utilities/common-utilities
+. "$SNAP/utilities/common-utilities"
+
 DEFAULT_MEMORY_LIMIT="512M"
 export PHP_FPM_PIDFILE="/tmp/pids/php-fpm.pid"
 export PHP_FPM_SOCKET="/tmp/sockets/php-fpm.sock"
@@ -35,13 +38,7 @@ php_is_running()
 
 wait_for_php()
 {
-	if ! php_is_running; then
-		printf "Waiting for PHP... "
-		while ! php_is_running; do
-			sleep 1
-		done
-		printf "done\n"
-	fi
+	wait_for_command "Waiting for PHP" php_is_running
 }
 
 php_pid()
@@ -79,19 +76,4 @@ php_previous_memory_limit()
 php_set_previous_memory_limit()
 {
 	snapctl set private.php.memory-limit="$1"
-}
-
-php_invalidate_opcache()
-{
-	tmpfile="$(mktemp --tmpdir tmp_XXXXXXXXXX.php)"
-	echo "<?php opcache_invalidate('$1'); ?>" > "$tmpfile"
-
-	export SCRIPT_FILENAME="$tmpfile"
-	export REQUEST_METHOD="GET"
-	if ! output="$(cgi-fcgi -bind -connect "$PHP_FPM_SOCKET")"; then
-		echo "Unable to invalidate opcache: $output" >&2
-	fi
-
-	# Dash doesn't support trap RETURN
-	rm -f "$tmpfile"
 }

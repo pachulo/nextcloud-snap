@@ -8,6 +8,8 @@
 . "$SNAP/utilities/nextcloud-utilities"
 # shellcheck source=src/redis/utilities/redis-utilities
 . "$SNAP/utilities/redis-utilities"
+# shellcheck source=src/common/utilities/common-utilities
+. "$SNAP/utilities/common-utilities"
 
 # Make sure nextcloud directory exists
 mkdir -p "$SNAP_COMMON/nextcloud"
@@ -41,36 +43,34 @@ else
 	cp -r "$SNAP/htdocs/config/autoconfig.php" "$NEXTCLOUD_CONFIG_DIR/"
 
 	# Also make sure we're using Redis for the memcache and file locking.
-	occ config:system:set redis host --value="$REDIS_SOCKET" --type=string
-	occ config:system:set redis port --value=0 --type=integer
-	occ config:system:set memcache.locking --value="\OC\Memcache\Redis" --type=string
-	occ config:system:set memcache.local --value="\OC\Memcache\Redis" --type=string
+	occ -n config:system:set redis host --value="$REDIS_SOCKET" --type=string
+	occ -n config:system:set redis port --value=0 --type=integer
+	occ -n config:system:set memcache.locking --value="\OC\Memcache\Redis" --type=string
+	occ -n config:system:set memcache.local --value="\OC\Memcache\Redis" --type=string
 
 	# It's possible for the updatenotification app to be installed (see
 	# https://github.com/nextcloud/nextcloud-snap/issues/838), and it'll
 	# interfere with the upgrade to v14. Disable it now.
-	occ app:disable updatenotification
+	occ -n app:disable updatenotification
 fi
 
-# Finally, make sure nextcloud is up to date. The return code of the upgrade
-# can be used to determine the outcome:
-#    success = 0;
-#    not installed = 1;
-#    in maintenance mode = 2;
-#    already up to date = 3;
-#    invalid arguments  = 4;
-#    other failure = 5;
-echo "Making sure nextcloud is fully upgraded..."
-occ upgrade --no-interaction
-return_code=$?
-if [ $return_code -eq 1 ]; then
-	echo "Nextcloud is not yet installed-- no upgrade necessary"
-elif [ $return_code -eq 3 ]; then
-	echo "Nextcloud is fully upgraded"
-elif [ $return_code -ne 0 ]; then
-	echo "Unable to upgrade Nextcloud. Will try again."
-	# occ may have left it in maintenance mode, so turn that off
-	occ maintenance:mode --off
-	sleep 10 # Delaying here so systemd doesn't throttle us
-	exit 1
+
+if nextcloud_is_installed; then
+	# Finally, make sure nextcloud is up to date. The return code of the
+	# upgrade can be used to determine the outcome:
+	#    success (or already up to date) = 0;
+	#    not installed = 1;
+	#    in maintenance mode = 2;
+	#    invalid arguments  = 4;
+	#    other failure = 5;
+	echo "Making sure nextcloud is fully upgraded..."
+	occ -n upgrade
+	return_code=$?
+	if [ $return_code -ne 0 ]; then
+		echo "Unable to upgrade Nextcloud. Will try again."
+		# occ may have left it in maintenance mode, so turn that off
+		disable_maintenance_mode
+		sleep 10 # Delaying here so systemd doesn't throttle us
+		exit 1
+	fi
 fi
