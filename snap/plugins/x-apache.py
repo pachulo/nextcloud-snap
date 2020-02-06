@@ -22,7 +22,7 @@ class ApachePlugin(snapcraft.BasePlugin):
             'default': 'event',
         }
 
-        schema['required'].append('modules')
+        schema['required'] = ['modules']
 
         return schema
 
