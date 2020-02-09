@@ -210,8 +210,14 @@ parts:
       - libxml2
       - libpng16-16
       # These seems to be needed for core18
-      - libzip4
+      - libcurl4
+      - libjpeg9
+      - libbz2-1.0
+      - libmcrypt4
       - libldap-2.4-2
+      - libfreetype6
+      - libgmp10
+      - libzip4
     build-packages:
       - libxml2-dev
       - libcurl4-openssl-dev
