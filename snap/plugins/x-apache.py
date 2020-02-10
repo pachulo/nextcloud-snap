@@ -32,6 +32,9 @@ class ApachePlugin(snapcraft.BasePlugin):
         self.build_packages.extend(
             ['pkg-config', 'libapr1-dev', 'libaprutil1-dev', 'libpcre3-dev',
              'libssl-dev'])
+        self.stage_packages.extend(
+            ['libapr1', 'libaprutil1', 'libpcre3',
+             'libssl1.0.0'])
 
     def build(self):
         super().build()
